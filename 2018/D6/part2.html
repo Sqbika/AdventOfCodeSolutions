@@ -1,0 +1,49 @@
+<html>
+
+<head>
+    <script src="input.js"></script>
+    <script>
+        window.onload = async () => {
+                var canvas = document.getElementById('table');
+                var context = canvas.getContext('2d');
+
+            function fill(color, x, y) {
+                context.fillStyle = color;
+                context.fillRect(x, y, 1, 1);
+            }
+
+            function intToColor(int) {
+                return "#" + (int * 16777.215).toString(16).substring(0,6).replace('.', '0');
+            }
+
+            var count = 0;
+
+            for (var x = 0; x < 400; x++) {
+                for (var y = 0; y < 400; y++) {
+                    var distances = data.map((e) => distance(e, [x,y]));
+                    var dist = distances.reduce((a,b) => a+b, 0);
+                    if (dist >= 10000) {
+                        fill("#000000", x, y);
+                    } else {
+                        fill(intToColor(dist), x, y);
+                        count++;
+                    }
+                }
+            }
+
+            function distance (p1, p2) {
+                return Math.abs(p1[0] -p2[0]) + Math.abs(p1[1] - p2[1]);
+            }
+
+            console.log(count);
+        }
+    </script>
+</head>
+
+<body>
+    <canvas id="table" width="400" height="400">
+
+    </canvas>
+</body>
+
+</html>
