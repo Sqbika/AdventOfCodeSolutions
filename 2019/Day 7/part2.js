@@ -47,7 +47,7 @@ class IntCodeComp {
     }
 
     addInput(num) {
-        this.inputs.push(num);
+        this.inputs.push(Number(num));
     }
 
     readData(num) {
@@ -55,12 +55,12 @@ class IntCodeComp {
     }
 
     set index(index) {
-        this._index = index;
+        this._index = Number(index);
         this.indexHist.push(index);
     }
 
     get index() {
-        return this._index;
+        return Number(this._index);
     }
 
     cleanData() {
@@ -91,10 +91,10 @@ class IntCodeComp {
             opcode:
             switch (this.opcode) {
                 case 1:
-                    this.data[this.readData(this.index+3)] = this.modeRead(0, modes) + this.modeRead(1, modes);
+                    this.data[this.readData(this.index+2)] = this.modeRead(0, modes) + this.modeRead(1, modes);
                     break opcode;
                 case 2:
-                    this.data[this.readData(this.index+3)] = this.modeRead(0, modes) * this.modeRead(1, modes);
+                    this.data[this.readData(this.index+2)] = this.modeRead(0, modes) * this.modeRead(1, modes);
                     break opcode;
                 case 3:
                     //accumulator = modes[0] == 1 ? readData(index+1) : readData(readData(index+1));
@@ -104,8 +104,8 @@ class IntCodeComp {
                     this.data[this.readData(this.index+1)] = this.inputs.shift();
                     break opcode;
                 case 4:
-                    console.log("O:" + this.data[this.readData(this.index+1)]);
-                    this.lastOutput = this.data[this.readData(this.index+1)];
+                    console.log("O:" + this.modeRead(0, modes));
+                    this.lastOutput = this.modeRead(0, modes);
                     break cycle;
                 case 5:
                     if (this.modeRead(0, modes) != 0) {
@@ -120,10 +120,10 @@ class IntCodeComp {
                     }
                     break opcode;
                 case 7:
-                    this.data[this.readData(this.index+3)] = this.modeRead(0, modes) < this.modeRead(1, modes) ? 1 : 0;
+                    this.data[this.readData(this.index+2)] = this.modeRead(0, modes) < this.modeRead(1, modes) ? 1 : 0;
                     break opcode;
                 case 8:
-                    this.data[this.readData(this.index+3)] = this.modeRead(0, modes) == this.modeRead(1, modes) ? 1 : 0;
+                    this.data[this.readData(this.index+2)] = this.modeRead(0, modes) == this.modeRead(1, modes) ? 1 : 0;
                     break opcode;
                 case 99:
                     break cycle;
@@ -165,15 +165,11 @@ function tryPhases() {
     console.log(max);
 }
 
-function debug() {
-    var codes = [9,7,8,5,6];
-    var innerData = `3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,
-    -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,
-    53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10`.split(',');
+function debug(codes, innerData) {
     var innerComps = [];
     for (var i = 0; i < 5; i++) {
         var comp = new IntCodeComp(i);
-        comp.data = innerData;
+        comp.data = new Array(...innerData);
         comp.addInput(codes[i]);
         if (i == 0) comp.addInput(0);
         comp.opcode = comp.readData(0);
@@ -196,8 +192,13 @@ function debug() {
 
 /*cleanData();
 runCycle();*/
-
+/*
 if (!true)
     tryPhases();
 else
-    debug();
+    debug([9,7,8,5,6], `3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,
+    -5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,
+    53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10`.split(','));*/
+
+    debug([9,8,7,6,5], `3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,
+    27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5`.split(','));
