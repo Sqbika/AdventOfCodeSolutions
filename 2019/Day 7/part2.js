@@ -28,11 +28,12 @@ class IntCodeComp {
     
     constructor(indx) {
         this.indexHist = [];
+        this.opcodeHist = [];
         this.indx = indx;
         this.index = 0;
         this.data = fs.readFileSync('./input.txt').toString().split(',');
         this.opcode = this.readData(0);
-        this.lastOutput = 0;
+        this.outputs = [];
         this.inputs = [];
         this.cycles = {
             1: 4,
@@ -63,16 +64,34 @@ class IntCodeComp {
         return Number(this._index);
     }
 
+    get opcode() {
+        return this._opcode;
+    }
+
+    set opcode(opcode) {
+        this._opcode = opcode;
+        this.opcodeHist.push(opcode);
+    }
+
     cleanData() {
         this.index = 0;
         this.data = fs.readFileSync('./input.txt').toString().split(',');
         this.opcode = this.readData(0);
-        this.lastOutput = 0;
+        this.outputs = [];
         this.inputs = [];
     }
 
     modeRead(arg, modes) {
         return modes[arg] == 1 ? this.readData(this.index + arg + 1) : this.readData(this.readData(this.index + arg + 1));
+    }
+
+    getOutput() {
+        if (this.outputs.length == 0) return false;
+        return this.outputs.shift();
+    }
+
+    readOutput() {
+        return this.outputs[this.outputs.length-1];
     }
 
     runCycle() {
@@ -105,7 +124,7 @@ class IntCodeComp {
                     break opcode;
                 case 4:
                     //console.log("O:" + this.modeRead(0, modes));
-                    this.lastOutput = this.modeRead(0, modes);
+                    this.outputs.push(this.modeRead(0, modes));
                     break opcode;
                 case 5:
                     if (this.modeRead(0, modes) != 0) {
@@ -149,20 +168,20 @@ function tryPhases() {
     phases.forEach(phase => {
         phase.forEach((input, i) => {
             comps[i].addInput(input);
+            if (i == 0) comps[i].addInput(0);
         });
         while(comps[numOfAmps-1].opcode != 99) {
             for (var i = 0; i < numOfAmps; i++) {
                 comps[i].runCycle();
-                comps[(i+1) % numOfAmps].addInput(comps[i].lastOutput);
+                if (comps[numOfAmps-1].opcode == 99) break;
+                comps[(i+1) % numOfAmps].addInput(comps[i].getOutput());
             }
         }
-        if (comps[numOfAmps-1].lastOutput > max) max = comps[numOfAmps-1].lastOutput;
+        //console.log("LO:" + comps[numOfAmps-1].readOutput());
+        if (comps[numOfAmps-1].readOutput() > max) max = comps[numOfAmps-1].readOutput();
         comps.forEach(comp => comp.cleanData());
     });
-    //I have no idea why +2. It just works. For everything
-    //The examples worked without the +2
-    //idk....
-    console.log(max+2);
+    console.log(max);
 }
 
 function debug(codes, innerData) {
@@ -181,9 +200,10 @@ function debug(codes, innerData) {
             if (innerComps[4].opcode == 99) {
                 break;
             }
-            innerComps[(i+1) % 5].addInput(innerComps[i].lastOutput);
+            innerComps[(i+1) % 5].addInput(innerComps[i].getOutput());
         }
     }
+    console.log(innerComps[4].getOutput());
 }
 
 
@@ -192,9 +212,9 @@ function debug(codes, innerData) {
 /*cleanData();
 runCycle();*/
 
-if (true)
+if (true) {
     tryPhases();
-else
+} else
     debug([9,7,8,5,6], `3,52,1001,52,-5,52,3,53,1,52,56,54,1007,54,5,55,1005,55,26,1001,54,-5,54,1105,1,12,1,53,54,53,1008,54,0,55,1001,55,1,55,2,53,55,53,4,53,1001,56,-1,56,1005,56,6,99,0,0,0,0,10`.split(','));
 
- //   debug([9,8,7,6,5], `3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5`.split(','));
+  //  debug([9,8,7,6,5], `3,26,1001,26,-4,26,3,27,1002,27,2,27,1,27,26,27,4,27,1001,28,-1,28,1005,28,6,99,0,0,5`.split(','));
