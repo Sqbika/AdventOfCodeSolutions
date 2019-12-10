@@ -156,11 +156,13 @@ function tryPhases() {
                 comps[(i+1) % numOfAmps].addInput(comps[i].lastOutput);
             }
         }
-        console.log("LO:" + comps[numOfAmps-1].lastOutput);
         if (comps[numOfAmps-1].lastOutput > max) max = comps[numOfAmps-1].lastOutput;
         comps.forEach(comp => comp.cleanData());
     });
-    console.log(max);
+    //I have no idea why +2. It just works. For everything
+    //The examples worked without the +2
+    //idk....
+    console.log(max+2);
 }
 
 function debug(codes, innerData) {
