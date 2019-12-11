@@ -75,6 +75,16 @@ class IntCodeComp {
         }
     }
 
+    literalModeRead(arg, modes) {
+        switch (modes[arg]) {
+            case 0:
+            case 1:
+                return this.readData(this.index + arg + 1);
+            case 2:
+                return this.readData(this.index + arg + 1) + this.relativeBase;
+        }
+    }
+
     getOutput() {
         if (this.outputs.length == 0) return false;
         return this.outputs.shift();
@@ -100,17 +110,17 @@ class IntCodeComp {
             opcode:
             switch (this.opcode) {
                 case 1:
-                    this.data[this.readData(this.index+3)] = this.modeRead(0, modes) + this.modeRead(1, modes);
+                    this.data[this.literalModeRead(2, modes)] = this.modeRead(0, modes) + this.modeRead(1, modes);
                     break opcode;
                 case 2:
-                    this.data[this.readData(this.index+3)] = this.modeRead(0, modes) * this.modeRead(1, modes);
+                    this.data[this.literalModeRead(2, modes)] = this.modeRead(0, modes) * this.modeRead(1, modes);
                     break opcode;
                 case 3:
                     //accumulator = modes[0] == 1 ? readData(index+1) : readData(readData(index+1));
                     if (this.inputs.length == 0) {
                         break cycle;
                     }
-                    this.data[this.modeRead(0, modes)] = this.inputs.shift();
+                    this.data[this.literalModeRead(0, modes)] = this.inputs.shift();
                     break opcode;
                 case 4:
                     //console.log("O:" + this.modeRead(0, modes));
@@ -129,10 +139,10 @@ class IntCodeComp {
                     }
                     break opcode;
                 case 7:
-                    this.data[this.readData(this.index+3)] = this.modeRead(0, modes) < this.modeRead(1, modes) ? 1 : 0;
+                    this.data[this.literalModeRead(2, modes)] = this.modeRead(0, modes) < this.modeRead(1, modes) ? 1 : 0;
                     break opcode;
                 case 8:
-                    this.data[this.readData(this.index+3)] = this.modeRead(0, modes) == this.modeRead(1, modes) ? 1 : 0;
+                    this.data[this.literalModeRead(2, modes)] = this.modeRead(0, modes) == this.modeRead(1, modes) ? 1 : 0;
                     break opcode;
                 case 9:
                     this.relativeBase += this.modeRead(0, modes);
@@ -146,9 +156,16 @@ class IntCodeComp {
     }
 }
 
-function run() {
+function part1() {
     var comp = new IntCodeComp(0);
     comp.addInput(1);
+    comp.runCycle();
+    console.log(comp.outputs);
+}
+
+function part2() {
+    var comp = new IntCodeComp(0);
+    comp.addInput(2);
     comp.runCycle();
     console.log(comp.outputs);
 }
@@ -162,7 +179,8 @@ function debug(inputData) {
 }
 
 if (true)
-    run();
+    //part1();
+    part2();
 else
     //debug("1102,34915192,34915192,7,4,7,99,0");
     //debug("109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99");
