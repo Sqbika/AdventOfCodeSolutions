@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "cwd": "${fileDirname}",
+            "cwd": "${fileDirname}/",
             "program": "${workspaceFolder}/2019/Day 7/part2.js"
         }, {
             "type": "node",
@@ -32,6 +32,26 @@
             ],
             "cwd": "${fileDirname}",
             "program": "${workspaceFolder}/2019/Day 9/part1.js"
+
+        }, {
+            "type": "node",
+            "request": "launch",
+            "name": "Day 10 - Part 1",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${fileDirname}",
+            "program": "${workspaceFolder}/2019/Day 10/part1.js"
+
+        }, {
+            "type": "node",
+            "request": "launch",
+            "name": "Day 10 - Part 2",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${fileDirname}",
+            "program": "${workspaceFolder}/2019/Day 10/part2.js"
 
         }
     ]
