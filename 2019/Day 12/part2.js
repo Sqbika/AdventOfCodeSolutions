@@ -9,8 +9,13 @@ const moonRegex = new RegExp('<x=([-0-9]*), y=([-0-9]*), z=([-0-9]*)>');
 
 class Moon {
 
-    constructor(posArr) {
+    constructor(posArr, id) {
         this.pos = {
+            x: Number(posArr[0]),
+            y: Number(posArr[1]),
+            z: Number(posArr[2])
+        };
+        this.starting = {
             x: Number(posArr[0]),
             y: Number(posArr[1]),
             z: Number(posArr[2])
@@ -21,6 +26,10 @@ class Moon {
             z: 0
         };
         this.dir = Object.keys(this.pos);
+        this.hist = [];
+        this.velohist = [];
+        this.cycles = 0;
+        this.id = id;
     }
 
     incVelo (pos, amount) {
@@ -42,9 +51,12 @@ class Moon {
     }
 
     applyVelocity() {
+        this.velohist.push({...this.velocity});
         Object.keys(this.pos).forEach(pos => {
             this.pos[pos] += Number(this.velocity[pos]);
         });
+        this.hist.push({...this.pos});
+        this.cycles++;
     }
 
     totalEnergy() {
@@ -53,7 +65,7 @@ class Moon {
     }
 }
 
-var moons = data.map(x => new Moon(x.match(moonRegex).slice(1)));
+var moons = data.map((x,i) => new Moon(x.match(moonRegex).slice(1), i));
 
 
 function iterateGravity() {
@@ -69,15 +81,42 @@ function cycle() {
     moons.forEach(moon => moon.applyVelocity());
 }
 
+function gcd(a,b){
+    var t = 0;
+    a < b && (t = b, b = a, a = t); // swap them if a < b
+    t = a%b;
+    return t ? gcd(b,t) : b;
+  }
+  
+  function lcm(a,b){
+    return a/gcd(a,b)*b;
+  }
+  
+
 
 function part1() {
     var i = 0;
+    const dir = 'xyz'.split('');
+    var LCM = {
+        x: 0,
+        y: 0,
+        z: 0
+    };
     while(true) {
-        if (i == 1000) break;
         cycle();
+        for (var j in dir) {
+            var a = dir[j];
+            if (moons.every(x => {
+                return x.pos[a] == x.starting[a] && x.velocity[a] == 0;
+            }) && LCM[a] == 0) {
+                LCM[a] = i+1;
+            }
+        }
+        if (LCM.x != 0 && LCM.y != 0 && LCM.z != 0) {
+            console.log("LCM:" + BigInt(Object.values(LCM).reduce(lcm)).toString());
+        }
         i++;
     }
-    console.log("Part1: " + moons.reduce((a,b) => a+= b.totalEnergy(), 0));
 }
 
 part1();

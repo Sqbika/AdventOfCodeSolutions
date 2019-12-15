@@ -73,6 +73,16 @@
             "cwd": "${fileDirname}",
             "program": "${workspaceFolder}/2019/Day 12/part1.js"
 
+        }, {
+            "type": "node",
+            "request": "launch",
+            "name": "Day 12 - Part 2",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${fileDirname}",
+            "program": "${workspaceFolder}/2019/Day 12/part2.js"
+
         }
     ]
 }
