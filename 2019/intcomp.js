@@ -23,6 +23,9 @@ class IntCodeComp {
             9: 2
         };
         this.relativeBase = 0;
+        String.prototype.reverse = function () {
+            return this.split('').reverse().join('');
+        }
     }
 
     addInput(num) {

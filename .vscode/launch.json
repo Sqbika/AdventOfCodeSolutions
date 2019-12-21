@@ -103,6 +103,26 @@
             "cwd": "${fileDirname}",
             "program": "${workspaceFolder}/2019/Day 13/part2.js"
 
+        }, {
+            "type": "node",
+            "request": "launch",
+            "name": "Day 15 - Part 1",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${fileDirname}",
+            "program": "${workspaceFolder}/2019/Day 15/part1.js"
+
+        }, {
+            "type": "node",
+            "request": "launch",
+            "name": "Day 15 - Part 2",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "cwd": "${fileDirname}",
+            "program": "${workspaceFolder}/2019/Day 15/part2.js"
+
         }
     ]
 }
