@@ -1,1 +1,5 @@
 input.txt
+.idea/
+lib/
+out/
+*.iml
