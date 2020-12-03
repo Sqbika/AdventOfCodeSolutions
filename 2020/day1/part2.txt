@@ -1,0 +1,14 @@
+sajt:
+for (var i = 0; i < text.length-2; i++) {
+    var a = Number(text[i]);
+  for (var j = i; j < text.length-1; j++) {
+    var b = Number(text[j]);
+    for (var k = j; k < text.length; k++) {
+     var c = Number(text[k]);
+     if (a+b+c == 2020) {
+      console.log(a*b*c);
+      break sajt;
+     }
+    }
+  }
+}

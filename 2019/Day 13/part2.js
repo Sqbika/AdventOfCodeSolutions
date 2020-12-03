@@ -56,7 +56,7 @@ if (true) {
         console.clear();
         console.log(game.renderGrid());
         console.log("Points: " + game.points);
-        for (var j = 0; j < 2000; j++) { 100+100}
+        for (var j = 0; j < 20000000; j++) { 100+100}
     }
 }
 
