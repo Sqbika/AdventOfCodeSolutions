@@ -21,7 +21,6 @@ class Day4 : Solution("day4/") {
 
 
     override fun part1() {
-        var valid = 0
         val validFields = listOf("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid")
         println("Valid passports: " + preParse(input).filter {
             line ->
@@ -29,8 +28,44 @@ class Day4 : Solution("day4/") {
         }.size)
     }
 
+    private fun validatePart(prefix:String, content:String):Boolean =
+        when (prefix) {
+            "byr" -> Integer.parseInt(content) in 1920..2002
+            "iyr" -> Integer.parseInt(content) in 2010..2020
+            "eyr" -> Integer.parseInt(content) in 2020..2030
+            "hgt" ->  when {
+                content.endsWith("cm") -> Integer.parseInt(content.replace("cm", "")) in 150..193
+                content.endsWith("in") -> Integer.parseInt(content.replace("in", "")) in 59..76
+                else -> false
+            }
+            "hcl" -> content.startsWith("#") && content.length == 7 && content.replace("#", "").all {
+                it in '0'..'9' || it in 'a'..'f'
+            }
+            "ecl" -> "amb blu brn gry grn hzl oth".split(" ").contains(content)
+            "pid" -> content.length == 9 && content.all { it in '0'..'9' }
+            "cid" -> true
+            else -> false
+        }
+
+
     override fun part2() {
-        TODO("Not yet implemented")
+        val lines = preParse(input)
+
+        println("Line count: ${lines.size}")
+        println("Valid Passports: " + lines.filter {
+            line ->
+            val valid = line.split(" ").all {
+                    val splitSegment = it.split(":")
+                    val valid = validatePart(splitSegment[0], splitSegment[1])
+                    if (false)
+                        println("${splitSegment[0]} | Content: ${splitSegment[1]} | Valid: $valid")
+                    valid
+            } && listOf("byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid").all {
+                line.contains(it)
+            }
+            println("${if (valid) "  Valid" else "Invalid"} Line: '$line'")
+            valid
+        }.size)
     }
 
 }
