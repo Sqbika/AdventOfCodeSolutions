@@ -22,6 +22,8 @@ fun main(args : Array<String>) {
     if (args.contains("today")) {
         val today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         runDay(today, args.contains("test"))
+    } else {
+        runDay(Integer.parseInt(args[0]), args.contains("test"))
     }
 }
 
