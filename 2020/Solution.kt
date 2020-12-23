@@ -23,7 +23,7 @@ fun main(args : Array<String>) {
         val today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         runDay(today, args.contains("test"))
     } else {
-        runDay(Integer.parseInt(args[0]), args.contains("test"))
+        runDay(Integer.parseInt(args[0].replace("day", "")), args.contains("test"))
     }
 }
 
