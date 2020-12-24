@@ -17,7 +17,9 @@ class Day20(path:String) : Solution(path) {
     }
 
     override fun part2() {
-        TODO("Not yet implemented")
+        val start = System.currentTimeMillis()
+        println("Input2: ${solvePart2(input)}")
+        println("Input2 took: ${System.currentTimeMillis() - start} ms")
     }
 
     override fun test() {
@@ -43,7 +45,43 @@ class Day20(path:String) : Solution(path) {
         val map = getCompleteMap(input)
         val sajt = map.stitch()
 
-        return 0.toBigInteger()
+        val maps = listOf (sajt, sajt.rotate(),sajt.rotate().rotate(),sajt.rotate().rotate().rotate())
+                    .map {
+                        listOf(
+                                it,
+                                it.flipVertical(),
+                                it.flipHorizontal(),
+                                it.flipVertical().flipHorizontal(),
+                        )
+                    }.flatten()
+
+        return maps.map { Pair(cuntDoubleCross(it), countMonsters(it)*15) }.filter { it.second != 0 }.map { it.first-it.second }.maxOrNull()!!.toBigInteger()
+    }
+
+    private fun cuntDoubleCross(map:List<String>) : Int = map.map { it.count { it == '#' }}.sum()
+
+    private fun countMonsters(map:List<String>) : Int {
+        val monstPos = listOf(
+                Pair(0, 18),
+                Pair(1, 0), Pair(1, 5), Pair(1, 6), Pair(1, 11), Pair(1, 12), Pair(1, 17), Pair(1, 18), Pair(1, 19),
+                Pair(2, 1), Pair(2, 4), Pair(2, 7), Pair(2, 10), Pair(2, 13), Pair(2, 16)
+        )
+
+        var result = 0
+
+        for (x in map.indices) {
+            for (y in map[x].indices) {
+                if (monstPos.all {
+                    try {
+                        map[x + it.first][y + it.second] == '#'
+                    } catch (_: Exception) {
+                        false
+                    }
+                })
+                    result++
+            }
+        }
+        return result
     }
 
     private fun getCompleteMap(input:List<String>) : Grid {
@@ -181,13 +219,13 @@ class Grid(val size: Int) {
 
     fun stitch() = grid.toList().map { row ->
         row.toList().map { piece ->
-            piece!!.input.subList(1, 10).map {
-                it.substring(1, 10)
+            piece!!.input.subList(1, 9).map {
+                it.substring(1, 9)
             }
         } //List<List<List<String>>>
     }.map { row ->
         val rowRes:MutableList<String> = mutableListOf()
-        (0..8).forEach { y ->
+        (0..7).forEach { y ->
             rowRes.add(row.joinToString("") { it[y] })
         }
         rowRes
