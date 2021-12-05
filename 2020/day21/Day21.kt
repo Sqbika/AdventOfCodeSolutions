@@ -1,7 +1,6 @@
 package day21
 
 import Solution
-
 class Day21(path: String) : Solution(path) {
 
     override fun part1() {
@@ -45,35 +44,15 @@ class Day21(path: String) : Solution(path) {
             }
         }
 
-        val allOfthem = alllllErgies.map { allergy ->
-            Pair(allergy, alllingredients.toSet().mapNotNull { food ->
-                if (allergyMap.containsKey(food))
-                    Pair(food, allergyMap[food]!!.count { it == allergy } )
+        val reverseMap = allergyMap.toList().fold(mutableMapOf<String, MutableList<String>>()) { acc, pair ->
+            pair.second.forEach {
+                if (acc.containsKey(it))
+                    acc[it]!!.add(pair.first)
                 else
-                    null
-            }.sortedBy { it.second }.reversed())
+                    acc[it] = mutableListOf(pair.first)
+            }
+            acc
         }
 
-        val result2 = alllllErgies
-
-        val pool = alllingredients.toMutableSet()
-        val result = alllllErgies.map { allergy ->
-            val num = pool.map { food ->
-                    Pair(food, allergyMap[food]!!.count { it == allergy })
-                }.maxByOrNull { it.second }!!
-            pool.remove(num.first)
-            Pair(allergy, num)
-        }
-
-
-
-        val sortedAsd = result
-                .sortedBy { it.first }
-
-        return Pair(pool.map { ing ->
-            alllingredients.count { ing == it }
-        }.sum(), sortedAsd.joinToString(",") { it.second.first })
     }
-
-
 }
