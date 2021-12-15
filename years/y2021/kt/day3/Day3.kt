@@ -2,19 +2,19 @@ package y2021.kt.day3
 
 import Solution
 
-class Day3(path: String) : Solution(path) {
+class Day3: Solution() {
 
-    override fun part1(input: List<String>) {
+    override fun part1(input: List<String>): String {
         val gamma = List(input.first().length)
         { idx ->
             input
                 .sumOf { (it[idx].digitToInt() * 2) -1}
                 .coerceIn(0, 1)
         }
-        println(gamma.joinToString("").toInt(2) * gamma.map{(it+1)%2}.joinToString("").toInt(2))
+        return (gamma.joinToString("").toInt(2) * gamma.map{(it+1)%2}.joinToString("").toInt(2)).toString()
     }
 
-    override fun part2(input: List<String>) {
+    override fun part2(input: List<String>): String {
         val oxygen = input.map{it.map{it.digitToInt()}}.toMutableList()
         val cotwo = oxygen.toMutableList()
         for (i in 0 until oxygen[0].size) {
@@ -23,7 +23,7 @@ class Day3(path: String) : Solution(path) {
             if (cotwo.size > 1)
                 cotwo.removeIf {it[i] != getCommon(cotwo.map{it[i]}, true) }
         }
-        println(oxygen[0].joinToString("").toInt(2) * cotwo[0].joinToString("").toInt(2))
+        return (oxygen[0].joinToString("").toInt(2) * cotwo[0].joinToString("").toInt(2)).toString()
     }
 
     private fun getCommon(nums: List<Int>, reverse: Boolean = false): Int {

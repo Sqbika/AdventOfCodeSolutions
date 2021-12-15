@@ -2,15 +2,11 @@ package y2021.kt.day13
 
 import Solution
 
-class Day13(path: String) : Solution(path) {
+class Day13: Solution() {
 
-    override fun part1(input: List<String>) {
-        println("Part 1: ${solve(input)}")
-    }
+    override fun part1(input: List<String>): String = solve(input, false).toString()
 
-    override fun part2(input: List<String>) {
-        println("Part 2: ${solve(input, true)}")
-    }
+    override fun part2(input: List<String>): String = solve(input, true).toString()
 
     fun visualize(pairs: List<Pair<Int, Int>>) {
         val maxX = pairs.maxOf {it.first}

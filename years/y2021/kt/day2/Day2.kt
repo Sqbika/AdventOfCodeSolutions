@@ -2,12 +2,11 @@ package y2021.kt.day2
 
 import Solution
 
-class Day2(path: String) : Solution(path) {
+class Day2: Solution() {
 
 
-    override fun part1(input: List<String>) {
-        println(
-            input.fold(arrayOf(0, 0)) { pair, str ->
+    override fun part1(input: List<String>): String {
+        return input.fold(arrayOf(0, 0)) { pair, str ->
                 val (dir, amount) = str.split(" ");
                 when (dir) {
                     "forward" -> pair[0] += amount.toInt()
@@ -17,12 +16,11 @@ class Day2(path: String) : Solution(path) {
                 }
                 pair
             }.reduce { a, b -> a * b }
-        )
+                .toString()
     }
 
-    override fun part2(input: List<String>) {
-        println(
-            input.fold(arrayOf(0, 0, 0)) { pair, str ->
+    override fun part2(input: List<String>): String {
+        return input.fold(arrayOf(0, 0, 0)) { pair, str ->
                 val (dir, amount) = str.split(" ");
                 when (dir) {
                     "forward" -> {
@@ -38,6 +36,6 @@ class Day2(path: String) : Solution(path) {
                 }
                 pair
             }.slice(0..1).reduce { a, b -> a * b }
-        )
+            .toString()
     }
 }

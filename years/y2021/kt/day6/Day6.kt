@@ -2,9 +2,9 @@ package y2021.kt.day6
 
 import Solution
 
-class Day6(path: String) : Solution(path) {
+class Day6: Solution() {
 
-    override fun part1(input: List<String>) {
+    override fun part1(input: List<String>): String {
         val fishes = input.get(0).split(",").map{it.toInt()}.toMutableList()
 
         for (i in 0 until 80) {
@@ -23,10 +23,10 @@ class Day6(path: String) : Solution(path) {
             println(i.toString() + ": " + fishes.joinToString(","))
         }
 
-        println("Part1: " + fishes.size)
+        return fishes.size.toString()
     }
 
-    override fun part2(input: List<String>) {
+    override fun part2(input: List<String>): String {
         val fishHolder = List(7) {
             Fishes(0, it)
         }
@@ -56,7 +56,7 @@ class Day6(path: String) : Solution(path) {
             fish8.count = fishToAdd
         }
 
-        println("Part 2: " + (fishHolder.sumOf{it.count} + fish7.count + fish8.count).toString())
+        return (fishHolder.sumOf{it.count} + fish7.count + fish8.count).toString()
 
     }
 

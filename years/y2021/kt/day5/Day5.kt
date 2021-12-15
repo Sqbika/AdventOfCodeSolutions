@@ -2,15 +2,11 @@ package y2021.kt.day5
 
 import Solution
 
-class Day5(path: String) : Solution(path) {
+class Day5: Solution() {
 
-    override fun part1(input: List<String>) {
-        println("Part 1:" + solveMap(input).values.count { it >= 2 })
-    }
+    override fun part1(input: List<String>): String = solveMap(input).values.count { it >= 2 }.toString()
 
-    override fun part2(input: List<String>) {
-        println("Part 2:" + solveMap(input, true).values.count{it >= 2})
-    }
+    override fun part2(input: List<String>): String = solveMap(input, true).values.count{it >= 2}.toString()
 
     private fun getRange(from: Int, to: Int) :IntRange {
         return if (from < to) {

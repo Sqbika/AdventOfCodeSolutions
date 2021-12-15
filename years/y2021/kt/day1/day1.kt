@@ -2,14 +2,14 @@ package y2021.kt.day1
 
 import Solution
 
-class Day1(path: String) : Solution(path) {
+class Day1: Solution() {
 
-    override fun part1(input: List<String>) {
-        println(input.fold(Pair(0, input.first().toInt())) { acc, s -> Pair(acc.first + (if (acc.second < s.toInt()) 1 else 0), s.toInt())})
+    override fun part1(input: List<String>): String {
+        return input.fold(Pair(0, input.first().toInt())) { acc, s -> Pair(acc.first + (if (acc.second < s.toInt()) 1 else 0), s.toInt())}.toString()
     }
 
-    override fun part2(input: List<String>) {
-        println(input
+    override fun part2(input: List<String>): String {
+        return input
             .zip(
                 input.drop(1).zip(
                     input.drop(2)
@@ -18,6 +18,7 @@ class Day1(path: String) : Solution(path) {
                 it.first.toInt() + it.second
             }.fold(Pair(-1, 0)) { acc, s ->
                 Pair(acc.first + if (acc.second < s) 1 else 0, s)
-            }.first)
+            }.first
+        .toString()
     }
 }

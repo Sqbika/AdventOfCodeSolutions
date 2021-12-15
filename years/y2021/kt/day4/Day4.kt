@@ -3,16 +3,18 @@ package y2021.kt.day4
 import Solution
 import transpose
 
-class Day4(path: String) : Solution(path) {
+class Day4: Solution() {
 
-    override fun part1(input: List<String>) {
+    override fun part1(input: List<String>): String {
         val bingo = Bingo(input)
         while (!bingo.solvePart1(bingo.numbers.removeFirst()) && bingo.numbers.isNotEmpty()) {}
+        return bingo.result.toString()
     }
 
-    override fun part2(input: List<String>) {
+    override fun part2(input: List<String>): String {
         val bingo = Bingo(input)
         while (!bingo.solvePart2(bingo.numbers.removeFirst()) && bingo.numbers.isNotEmpty()) {}
+        return bingo.result.toString()
     }
 }
 
@@ -22,6 +24,8 @@ class Bingo(
     val numbers: MutableList<Int>
 
     val boards: MutableList<MutableList<List<String>>> = mutableListOf()
+
+    var result: Int = Int.MIN_VALUE
 
     init {
         numbers = input[0].split(",").map{it.toInt()}.toMutableList()
@@ -54,7 +58,7 @@ class Bingo(
         this.updateBoards(n)
 
         if (boards.size == 1) {
-            println("Part2:" + (sumBoard(boards[0]) * n))
+            result = sumBoard(boards[0]) * n
             return true
         }
 
@@ -91,9 +95,7 @@ class Bingo(
             val areYouWinningSon = this.isBoardWinning(board)
 
             if (areYouWinningSon) {
-                val count = sumBoard(board)
-
-                println("Part 1:" + count * lastDraw)
+                result = sumBoard(board) * lastDraw
                 return true
             }
         }

@@ -3,9 +3,9 @@ package y2021.kt.day7
 import Solution
 import kotlin.math.abs
 
-class Day7(path: String): Solution(path) {
+class Day7: Solution() {
 
-    override fun part1(input: List<String>) {
+    override fun part1(input: List<String>): String {
         val nums = input[0].split(",").map{it.toInt()}
 
         val groups = nums.groupBy { it }.entries.sortedBy { it.value.size }.toMutableList()
@@ -18,10 +18,10 @@ class Day7(path: String): Solution(path) {
             })
         }.sortedBy { it.second }
 
-        println("Part 1: ${costs.first().second}")
+        return costs.first().second.toString()
     }
 
-    override fun part2(input: List<String>) {
+    override fun part2(input: List<String>): String {
         val nums = input[0].split(",").map{it.toInt()}
 
         val groups = nums.groupBy { it }.entries.sortedBy { it.value.size }.toMutableList()
@@ -34,7 +34,7 @@ class Day7(path: String): Solution(path) {
             })
         }.sortedBy { it.second }
 
-        println("Part 2: ${costs.first().second}")
+        return costs.first().second.toString()
     }
 
     fun somethingsomethingtrianglenumber(n: Int): Int =  (n*n + n) / 2

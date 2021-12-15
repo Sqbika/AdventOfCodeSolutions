@@ -4,7 +4,7 @@ import Solution
 import kotlin.math.max
 import kotlin.math.min
 
-class Day9(path: String) : Solution(path) {
+class Day9: Solution() {
 
     fun findBasins(points: List<List<Int>>): MutableList<Triple<Int, Int, Int>> {
         val lowPoints = mutableListOf<Triple<Int, Int, Int>>()
@@ -27,15 +27,13 @@ class Day9(path: String) : Solution(path) {
         return lowPoints
     }
 
-    override fun part1(input: List<String>) {
+    override fun part1(input: List<String>): String {
         val points = input.map { it.toCharArray().map { it.digitToInt() } }
 
-
-
-        println("Part 1: ${findBasins(points).map { it.third }.sumOf { it + 1 }}")
+        return findBasins(points).map { it.third }.sumOf { it + 1 }.toString()
     }
 
-    override fun part2(input: List<String>) {
+    override fun part2(input: List<String>): String {
         val points = input.map { it.toCharArray().map { it.digitToInt() } }
 
         val counts = findBasins(points)
@@ -46,12 +44,11 @@ class Day9(path: String) : Solution(path) {
                 ).size + 1
             }
 
-        println("Part 2: ${
-                counts
-                .sorted()
-                .takeLast(3)
-                .reduce(Int::times)
-        }")
+        return counts
+            .sorted()
+            .takeLast(3)
+            .reduce(Int::times)
+            .toString()
     }
 
     private fun adjacentNonNines(points: MutableList<MutableList<String>>, start: Triple<Int, Int, Int>): List<Int> {

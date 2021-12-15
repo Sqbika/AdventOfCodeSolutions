@@ -4,15 +4,11 @@ import Solution
 import kotlin.math.max
 import kotlin.math.min
 
-class Day11(path: String) : Solution(path) {
+class Day11: Solution() {
 
-    override fun part1(input: List<String>) {
-        doit(input)
-    }
+    override fun part1(input: List<String>): String = doit(input).toString()
 
-    override fun part2(input: List<String>) {
-        doit(input, true)
-    }
+    override fun part2(input: List<String>): String = doit(input, true).toString()
 
     fun print(input: List<List<Int>>) {
         println(

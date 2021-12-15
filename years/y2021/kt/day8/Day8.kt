@@ -4,16 +4,16 @@ import Solution
 import swap
 import kotlin.test.assertEquals
 
-class Day8(path: String): Solution(path)  {
+class Day8 : Solution()  {
 
-    override fun part1(input: List<String>) {
-        println("Part 1:" + input.sumOf { SegMent.create(it).part1Sum()})
+    override fun part1(input: List<String>): String {
+        return input.sumOf { SegMent.create(it).part1Sum()}.toString()
     }
 
-    override fun part2(input: List<String>) {
+    override fun part2(input: List<String>): String {
         val debugMap = input.map { SegMent.create(it).part2Sum()}
 
-        println("Part 2:" + input.sumOf { SegMent.create(it).part2Sum()})
+        return input.sumOf { SegMent.create(it).part2Sum()}.toString()
     }
 
     private class SegMent(

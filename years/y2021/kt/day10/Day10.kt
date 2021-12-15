@@ -3,24 +3,20 @@ package y2021.kt.day10
 import Solution
 import kotlin.math.max
 
-class Day10(path: String) : Solution(path) {
+class Day10: Solution() {
 
-    override fun part1(input: List<String>) {
-        println("Part 1: ${input.map{ ChunkSequence(it).run()}.sumOf { max(it, 0) }}")
-    }
+    override fun part1(input: List<String>): String = input.map{ ChunkSequence(it).run()}.sumOf { max(it, 0) }.toString()
 
-    override fun part2(input: List<String>) {
+    override fun part2(input: List<String>): String {
         val res = input.map {
             ChunkSequence(it).run(true)
         }
 
-        println("Part 2: " +
-            res.filter { it >= 0 }
-                .sorted()
-                .run {
-                    get(size/2)
-                }
-        )
+        return res.filter { it >= 0 }
+            .sorted()
+            .run {
+                get(size/2)
+            }.toString()
     }
 }
 

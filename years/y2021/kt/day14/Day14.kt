@@ -2,21 +2,12 @@ package y2021.kt.day14
 
 import Solution
 import kotlinx.coroutines.runBlocking
-import pmap
 
-class Day14(path: String) : Solution(path) {
+class Day14: Solution() {
 
-    override fun part1(input: List<String>) {
-        runBlocking {
-            println("Part 1: ${solve(input, 10)}")
-        }
-    }
+    override fun part1(input: List<String>): String = solve(input, 10).toString()
 
-    override fun part2(input: List<String>) {
-        runBlocking {
-            println("Part 2: ${solve(input, 40)}")
-        }
-    }
+    override fun part2(input: List<String>): String = solve(input, 40).toString()
 
     fun solve(input:List<String>, count: Int):Long {
 

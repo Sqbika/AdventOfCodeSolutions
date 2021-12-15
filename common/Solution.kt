@@ -1,14 +1,66 @@
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.runInterruptible
 import java.io.File
+import java.time.Instant
 import java.util.*
+import kotlin.concurrent.fixedRateTimer
+import kotlin.math.floor
+import kotlin.test.assertEquals
 
-abstract class Solution(path:String) {
+abstract class Solution {
+
+    val classPath: String by lazy {
+        this.javaClass.`package`.toString()
+    }
+
+    val path : String by lazy {
+        this.javaClass.getResource(".")?.path ?: ""
+    }
 
     val input:List<String> by lazy {File(path+"input.txt").readLines()}
-    val test:List<String> by lazy {File(path+"test.txt").readLines()}
 
-    abstract fun part1(input: List<String>)
+    open val tests = listOf<Pair<String, String>>()
 
-    abstract fun part2(input: List<String>)
+    abstract fun part1(input: List<String>): String
+
+    abstract fun part2(input: List<String>): String
+
+    fun getTest(idx :Int): List<String> = File(path+"test$idx.txt").readLines()
+
+    fun doTests() {
+        tests.forEachIndexed { idx, test ->
+            println("=".repeat(25))
+            println("Running test $idx:")
+            try {
+                val part1 = part1(getTest(idx))
+                if (test.first.isNotBlank()) {
+                    if (test.first == part1) {
+                        println("Part 1 PASS: $part1")
+                    } else {
+                        System.err.println("Part 1 FAIL: Expected: \"${test.first}\", Actual: \"${part1}\"")
+                    }
+                } else {
+                    println("Part 1: $part1")
+                }
+
+                val part2 = part2(getTest(idx))
+                if (test.second.isNotBlank()) {
+                    if (test.second == part2) {
+                        println("Part 2 PASS: $part2")
+                    } else {
+                        System.err.println("Part 2 FAIL: Expected: \"${test.second}\", Actual: \"${part2}\"")
+                    }
+                } else {
+                    println("Part 2: $part2")
+                }
+            } catch (e: Exception) {
+                System.err.println("Failed to run test${idx}.")
+                e.printStackTrace()
+            }
+            println("=".repeat(25))
+        }
+    }
 }
 
 
@@ -23,16 +75,31 @@ fun main(args : Array<String>) {
 
 fun runDay(today:Int, doTest:Boolean) {
     val day = Class.forName("y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$today.Day$today")
-    val solution:Solution = day.getDeclaredConstructor(String::class.java).newInstance("years/y${Calendar.getInstance().get(Calendar.YEAR)}/kt/day$today/") as Solution
+    val solution:Solution = day.getDeclaredConstructor().newInstance() as Solution
+
     if (doTest) {
-        solution.part1(solution.test)
-        println("Part1 test")
-        solution.part2(solution.test)
-        println("Part2 test")
-        return
+        solution.doTests()
+    } else {
+        println("=".repeat(25))
+
+        var start = Instant.now()
+
+        val stopwatch = fixedRateTimer("timer", false, 0L, 1000) {
+            print("\rEllapsed: ${(Instant.now().epochSecond - start.epochSecond)}s")
+        }
+
+        val part1 = solution.part1(solution.input)
+
+        println("\nPart 1: $part1")
+
+
+        println("\n" + "=".repeat(25))
+
+        start = Instant.now()
+        print("Ellapsed")
+
+        println("Part 2: \"${solution.part2(solution.input)}\"")
+
+        println("=".repeat(25))
     }
-    solution.part1(solution.input)
-    println("Part1 done")
-    solution.part2(solution.input)
-    println("Part2 done")
 }

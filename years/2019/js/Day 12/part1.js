@@ -3,7 +3,7 @@ const fs = require('fs');
 if (true)
     var data = fs.readFileSync('./input.txt').toString().split('\n');
 else
-    var data = fs.readFileSync('./test1.txt').toString().split('\n');
+    var data = fs.readFileSync('./test0.txt').toString().split('\n');
 
 const moonRegex = new RegExp('<x=([-0-9]*), y=([-0-9]*), z=([-0-9]*)>');
 

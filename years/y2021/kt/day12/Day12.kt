@@ -3,16 +3,11 @@ package y2021.kt.day12
 import Solution
 import java.util.*
 
-class Day12(path: String) : Solution(path) {
+class Day12: Solution() {
 
-    override fun part1(input: List<String>) {
+    override fun part1(input: List<String>): String = calculatePaths(input, false).toString()
 
-        println("Part 1: ${calculatePaths(input)}")
-    }
-
-    override fun part2(input: List<String>) {
-        println("Part 2: ${calculatePaths(input, true)}")
-    }
+    override fun part2(input: List<String>): String = calculatePaths(input, true).toString()
 
     fun calculatePaths(input: List<String>, part2:Boolean = false): Int {
 
