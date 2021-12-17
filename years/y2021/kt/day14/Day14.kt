@@ -1,7 +1,6 @@
 package y2021.kt.day14
 
 import Solution
-import kotlinx.coroutines.runBlocking
 
 class Day14: Solution() {
 

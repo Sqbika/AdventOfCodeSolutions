@@ -1,12 +1,7 @@
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.runInterruptible
 import java.io.File
 import java.time.Instant
 import java.util.*
 import kotlin.concurrent.fixedRateTimer
-import kotlin.math.floor
-import kotlin.test.assertEquals
 
 abstract class Solution {
 
@@ -38,7 +33,7 @@ abstract class Solution {
                     if (test.first == part1) {
                         println("Part 1 PASS: $part1")
                     } else {
-                        System.err.println("Part 1 FAIL: Expected: \"${test.first}\", Actual: \"${part1}\"")
+                        println("Error: Part 1 FAIL: Expected: \"${test.first}\", Actual: \"${part1}\"")
                     }
                 } else {
                     println("Part 1: $part1")
@@ -49,7 +44,7 @@ abstract class Solution {
                     if (test.second == part2) {
                         println("Part 2 PASS: $part2")
                     } else {
-                        System.err.println("Part 2 FAIL: Expected: \"${test.second}\", Actual: \"${part2}\"")
+                        println("Error: Part 2 FAIL: Expected: \"${test.second}\", Actual: \"${part2}\"")
                     }
                 } else {
                     println("Part 2: $part2")
@@ -67,14 +62,14 @@ abstract class Solution {
 fun main(args : Array<String>) {
     if (args.contains("today")) {
         val today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
-        runDay(today, args.contains("test"))
+        runDay("y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$today.Day$today", args.contains("test"))
     } else {
-        runDay(Integer.parseInt(args[0].replace("day", "")), args.contains("test"))
+        runDay(args[0], args.contains("test"))
     }
 }
 
-fun runDay(today:Int, doTest:Boolean) {
-    val day = Class.forName("y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$today.Day$today")
+fun runDay(clazz: String, doTest:Boolean) {
+    val day = Class.forName(clazz)
     val solution:Solution = day.getDeclaredConstructor().newInstance() as Solution
 
     if (doTest) {
@@ -82,21 +77,12 @@ fun runDay(today:Int, doTest:Boolean) {
     } else {
         println("=".repeat(25))
 
-        var start = Instant.now()
-
-        val stopwatch = fixedRateTimer("timer", false, 0L, 1000) {
-            print("\rEllapsed: ${(Instant.now().epochSecond - start.epochSecond)}s")
-        }
-
         val part1 = solution.part1(solution.input)
 
         println("\nPart 1: $part1")
 
 
         println("\n" + "=".repeat(25))
-
-        start = Instant.now()
-        print("Ellapsed")
 
         println("Part 2: \"${solution.part2(solution.input)}\"")
 
