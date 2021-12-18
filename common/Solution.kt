@@ -60,7 +60,7 @@ abstract class Solution {
 
 
 fun main(args : Array<String>) {
-    if (args.contains("today")) {
+    if (args.isEmpty() || args.contains("today")) {
         val today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         runDay("y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$today.Day$today", args.contains("test"))
     } else {
