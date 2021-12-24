@@ -2,7 +2,10 @@ package y2021.kt.day24
 
 import Solution
 import toDigits
+import java.lang.Math.pow
 import kotlin.collections.ArrayDeque
+import kotlin.math.absoluteValue
+import kotlin.math.pow
 
 class Day24 : Solution() {
 
@@ -11,26 +14,31 @@ class Day24 : Solution() {
             it.split(" ")
         }
 
-        for (i in 99999999999999 downTo 0) {
-            val inpQueue = i.toDigits().toMutableList()
-            val cpu = CPU()
+        var curTry: Long = 99999999999999
+        val cpu = CPU()
 
+        do {
+            while (curTry.toString().contains("0")) {
+                curTry -= 10.0.pow((13 - curTry.toString().indexOf("0"))).toLong()
+            }
+
+            val inpQueue = curTry.toDigits().toMutableList()
             instructions.forEach { ins ->
-                if (ins[0] == "ins") {
-                    cpu.process("ins", ins[1], inpQueue.removeFirst().toString())
+                if (ins[0] == "inp") {
+                    cpu.process(ins[0], ins[1], inpQueue.removeFirst().toString())
                 } else {
                     cpu.process(ins[0], ins[1], ins[2])
                 }
             }
 
-            if (cpu.z.getValue() == 0) {
-                return i.toString()
-            } else {
-                println("$i was invalid. Z: ${cpu.z.getValue()}")
+            if (cpu.z.getValue() != 0) {
+                //println("Code $curTry failed. Gap: ${cpu.z.getValue()}")
+                curTry--;
             }
-        }
+        } while(cpu.z.getValue() != 0)
 
-        return "-1"
+
+        return curTry.toString()
     }
 
     override fun part2(input: List<String>): String {
@@ -66,6 +74,15 @@ class CPU() {
             else -> IntHolder(reg.toInt())
         }
     }
+
+    fun reset() {
+        w.setValue(0)
+        x.setValue(0)
+        y.setValue(0)
+        z.setValue(0)
+    }
+
+    override fun toString(): String = "İnt($w,$x,$y,$z)"
 }
 
 data class IntHolder(
@@ -111,4 +128,6 @@ data class IntHolder(
             return false
         }
     }
+
+    override fun toString(): String = value.toString()
 }

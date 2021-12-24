@@ -52,3 +52,9 @@ java {
         languageVersion.set(JavaLanguageVersion.of(16))
     }
 }
+
+tasks.register<Copy>("copyInputsAndTests") {
+    from(layout.projectDirectory.dir("years"))
+    include("**/*.txt")
+    into(layout.buildDirectory.dir("classes/kotlin/main/"))
+}
