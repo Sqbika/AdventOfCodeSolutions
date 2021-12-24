@@ -79,7 +79,7 @@ class SortedRange(
 
     fun split(startEnd: Int, endStart: Int = startEnd): List<SortedRange> = listOf(SortedRange(start, startEnd), SortedRange(endStart, end))
 
-    fun combine(other: SortedRange): SortedRange {
+    /*fun combine(other: SortedRange): SortedRange {
         if (this.start > other.end || other.start > this.end)
-    }
+    }*/
 }

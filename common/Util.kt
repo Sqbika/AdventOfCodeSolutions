@@ -29,3 +29,6 @@ public inline fun <T> Iterable<T>.productOf(selector: (T) -> Long): Long {
     }
     return sum
 }
+
+
+inline fun Number.toDigits(): List<Int> = this.toString().toCharArray().map{it.toString().toInt()}
