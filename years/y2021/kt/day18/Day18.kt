@@ -11,9 +11,8 @@ class Day18 : Solution() {
         Pair("791", ""),
         Pair("1137", ""),
         Pair("3488", ""),
-        Pair("4140", ""),
+        Pair("4140", "3993"),
         Pair("", ""),
-        Pair("927", ""),
     )
 
     override fun part1(input: List<String>): String {
@@ -31,12 +30,12 @@ class Day18 : Solution() {
             while(true) {
                 val explode = fish.doExplosions(0)
                 if (explode) {
-                    println("Explode: $fish")
+                    //println("Explode: $fish")
                     continue
                 }
                 val split = fish.doSplits()
                 if (split) {
-                    println("Split: $fish")
+                    //println("Split: $fish")
                     continue
                 }
                 println("End: $fish")
@@ -45,12 +44,40 @@ class Day18 : Solution() {
             fish
         } as FishPair
 
-        return reducedFish.part1().toString()
+        return reducedFish.sumPair().toString()
     }
 
     override fun part2(input: List<String>): String {
+        val fishes = input.map { left ->
+            input.mapNotNull { right ->
+                if (left != right) {
+                    val fish = FishPair(match(left), match(right))
+                    while(true) {
+                        val explode = fish.doExplosions(0)
+                        if (explode) {
+                            //println("Explode: $fish")
+                            continue
+                        }
+                        val split = fish.doSplits()
+                        if (split) {
+                            //println("Split: $fish")
+                            continue
+                        }
+                        println("End: $fish")
+                        break
+                    }
+                    fish
+                } else {
+                    null
+                }
+            }
+        }
+            .flatten()
+            .map {
+                it.sumPair()
+            }
 
-        return ""
+        return fishes.maxOf {it}.toString()
     }
 
     fun match(input: String): Any {
@@ -80,6 +107,23 @@ class FishPair(
     var left: Any,
     var right: Any,
 ) {
+
+    companion object {
+        val colors = listOf(
+            "\u001B[0;31m",
+            "\u001B[0;32m",
+            "\u001B[0;33m",
+            "\u001B[0;34m",
+            "\u001B[0;35m",
+            "\u001B[0;36m",
+            "\u001B[0;37m",
+        )
+
+        const val reset = "\u001B[0m"
+
+        const val num = "\u001B[33m"
+        const val bignum = "\u001B[91m"
+    }
 
     constructor(pair: Pair<Int, Int>) : this(pair.first, pair.second)
 
@@ -176,16 +220,19 @@ class FishPair(
     fun doSplits(): Boolean {
         if (isLeftFish() && left().doSplits())
             return true
-        if (isRightFish() && right().doSplits())
-            return true
 
         if (!isLeftFish() && leftInt() > 9) {
             left = FishPair(numSplit(leftInt()))
+            left().parent = this
             return true
         }
 
+        if (isRightFish() && right().doSplits())
+            return true
+
         if (!isRightFish() && rightInt() > 9) {
             right = FishPair(numSplit(rightInt()))
+            right().parent = this
             return true
         }
 
@@ -194,11 +241,30 @@ class FishPair(
 
     fun add(other: FishPair): FishPair = FishPair(this, other)
 
-    fun part1(): Long =
-        (if (left is FishPair) (left as FishPair).part1() else (left as Int).toLong()) * 3 +
-        (if (right is FishPair) (right as FishPair).part1() else (right as Int).toLong()) * 2
+    fun sumPair(): Long =
+        (if (left is FishPair) (left as FishPair).sumPair() else (left as Int).toLong()) * 3 +
+        (if (right is FishPair) (right as FishPair).sumPair() else (right as Int).toLong()) * 2
 
-    override fun toString() = "[$left,$right]"
+    fun print(depth: Int = 0): String {
+        return  depthColor(depth, "[") +
+                (if (isLeftFish()) left().print(depth+1) else charColor(leftInt())) +
+                depthColor(depth, ",") +
+                (if (isRightFish()) right().print(depth+1) else charColor(rightInt())) +
+                depthColor(depth, "]")
+    }
+
+    private fun depthColor(depth:Int, text: String): String {
+        return colors[depth] + text + reset
+    }
+
+    private fun charColor(char: Int): String {
+        if (char > 9) {
+            return bignum + char + reset
+        }
+        return "" + char
+    }
+
+    override fun toString() = print()
 
     fun numSplit(num: Int): Pair<Int, Int> = Pair(num/2, num/2 + num%2)
 }
