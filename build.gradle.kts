@@ -41,7 +41,7 @@ application {
 }
 
 sourceSets.main {
-    java.srcDirs("common/", "years/y2021")
+    java.srcDirs("common/", "years/y2022")
     resources {
 
     }
