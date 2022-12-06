@@ -52,6 +52,8 @@ abstract class Solution {
             } catch (e: Exception) {
                 System.err.println("Failed to run test${idx}.")
                 e.printStackTrace()
+            } catch (e: NotImplementedError) {
+                //skip
             }
             println("=".repeat(25))
         }
