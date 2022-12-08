@@ -5,15 +5,17 @@ import kotlin.concurrent.fixedRateTimer
 
 abstract class Solution {
 
+    var isTest = false;
+
     val classPath: String by lazy {
         this.javaClass.`package`.toString()
     }
 
-    val path : String by lazy {
+    val path: String by lazy {
         this.javaClass.getResource(".")?.path ?: ""
     }
 
-    val input:List<String> by lazy {File(path+"input.txt").readLines()}
+    val input: List<String> by lazy { File(path + "input.txt").readLines() }
 
     open val tests = listOf<Pair<String, String>>()
 
@@ -21,9 +23,10 @@ abstract class Solution {
 
     abstract fun part2(input: List<String>): String
 
-    fun getTest(idx :Int): List<String> = File(path+"test$idx.txt").readLines()
+    fun getTest(idx: Int): List<String> = File(path + "test$idx.txt").readLines()
 
     fun doTests() {
+        this.isTest = true;
         tests.forEachIndexed { idx, test ->
             println("=".repeat(25))
             println("Running test $idx:")
@@ -61,7 +64,7 @@ abstract class Solution {
 }
 
 
-fun main(args : Array<String>) {
+fun main(args: Array<String>) {
     if (args.isEmpty() || args.contains("today")) {
         val today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         runDay("y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$today.Day$today", args.contains("test"))
@@ -70,9 +73,9 @@ fun main(args : Array<String>) {
     }
 }
 
-fun runDay(clazz: String, doTest:Boolean) {
+fun runDay(clazz: String, doTest: Boolean) {
     val day = Class.forName(clazz)
-    val solution:Solution = day.getDeclaredConstructor().newInstance() as Solution
+    val solution: Solution = day.getDeclaredConstructor().newInstance() as Solution
 
     if (doTest) {
         solution.doTests()
