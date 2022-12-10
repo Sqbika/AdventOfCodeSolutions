@@ -26,7 +26,11 @@ abstract class Solution {
     fun getTest(idx: Int): List<String> = File(path + "test$idx.txt").readLines()
 
     fun doTests() {
-        this.isTest = true;
+        this.isTest = true
+        if (tests.size == 0) {
+            throw Error("No tests defined.")
+        }
+
         tests.forEachIndexed { idx, test ->
             println("=".repeat(25))
             println("Running test $idx:")
@@ -68,6 +72,9 @@ fun main(args: Array<String>) {
     if (args.isEmpty() || args.contains("today")) {
         val today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         runDay("y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$today.Day$today", args.contains("test"))
+    } else if(args.any{it.startsWith("day")}) {
+        val day = args.find{it.startsWith("day")}!!.replace("day", "").toInt()
+        runDay("y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$day.Day$day", args.contains("test"))
     } else {
         runDay(args[0], args.contains("test"))
     }

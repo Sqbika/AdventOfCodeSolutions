@@ -22,7 +22,7 @@
                 "Build AdventOfCodeSolutions"
             ],
             "mainClass": "SolutionKt",
-            "module": "personal.AdventOfCodeSolutions.main",
+            "module": "AdventOfCodeSolutions.main",
             "options": [
                 "-Dfile.encoding=UTF-8"
             ],
@@ -36,11 +36,25 @@
                 "Build AdventOfCodeSolutions"
             ],
             "mainClass": "SolutionKt",
-            "module": "personal.AdventOfCodeSolutions.main",
+            "module": "AdventOfCodeSolutions.main",
             "options": [
                 "-Dfile.encoding=UTF-8"
             ],
             "args": ["today", "test"],
-        }
+        },
+        {
+            "name": "Day8",
+            "type": "jps-run",
+            "dependsOn": [
+                "Copy Deps",
+                "Build AdventOfCodeSolutions"
+            ],
+            "mainClass": "SolutionKt",
+            "module": "AdventOfCodeSolutions.main",
+            "options": [
+                "-Dfile.encoding=UTF-8"
+            ],
+            "args": ["day8", "tes"],
+        },
     ]
 }
