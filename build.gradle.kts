@@ -37,11 +37,11 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("SolutionKt")
+    mainClass.set("common.SolutionKt")
 }
 
 sourceSets.main {
-    java.srcDirs("common/", "years/y2022")
+    java.srcDirs("src/")
     resources {
 
     }
@@ -54,7 +54,7 @@ java {
 }
 
 tasks.register<Copy>("copyInputsAndTests") {
-    from(layout.projectDirectory.dir("years"))
+    from("src/")
     include("**/*.txt")
     into(layout.buildDirectory.dir("classes/kotlin/main/"))
 }
