@@ -2,6 +2,14 @@ package years.y2022.kt.day14
 
 import common.Solution
 
+enum class ScanStatus {
+    IsPlaced,
+    IsRock,
+    IsSand,
+    IsEmpty,
+    Panic
+}
+
 class Map(
     input: List<String>
 ) {
@@ -12,6 +20,7 @@ class Map(
 
     val rockId = 1
     val sandId = 2
+    val shouldHaveBeenSandId = 3
 
     val sandSpawn = Pair(500, 0)
 
@@ -43,6 +52,7 @@ class Map(
     fun typeToAscii(type: Int): String = when (type) {
         rockId -> "█"
         sandId -> "░"
+        shouldHaveBeenSandId -> "X"
         else -> " "
     }
 
@@ -57,6 +67,13 @@ class Map(
     }
 
     fun get(x: Int, y: Int): Int? = map[y]?.get(x)
+
+    fun getFancy(x: Int, y: Int): ScanStatus = when(get(x,y)) {
+        null -> ScanStatus.IsEmpty
+        rockId -> ScanStatus.IsRock
+        sandId -> ScanStatus.IsSand
+        else -> throw Error("This when status is not processed")
+    }
 
     fun toRange(left: Int, right: Int): IntRange {
         return if (left < right) {
@@ -111,55 +128,26 @@ class Map(
                 }
 
                 sandId -> {
-                    var counter = 1
-
-                    while (
-                        !(
-                            get(x - counter, y + counter) == null &&
-                            get(x - counter - 1, y + counter + 1) != null
-                        ) && y + counter <= maxY
-                    ) {
-                        counter++
+                    if (handleSand(x,y) == false) {
+                        set(x, y, sandId)
                     }
-
-                    if (
-                        get(x - counter, y + counter) == null &&
-                        get(x - counter - 1, y + counter + 1) != null
-                    ) {
-                        set(x - counter, y + counter, sandId)
-                        return true
-                    }
-
-                    if (y+counter <= maxY) return false
-
-                    counter = 1;
-
-                    while (
-                        !(
-                            get(x + counter, y + counter) == null &&
-                            get(x + counter + 1, y + counter + 1) != null
-                        ) && y+counter <= maxY
-                    ) {
-                        counter++
-                    }
-
-                    if (
-                        get(x + counter, y + counter) == null &&
-                        get(x + counter + 1, y + counter + 1) != null
-                    ) {
-                        set(x + counter, y + counter, sandId)
-                        return true
-                    }
-
-                    if (y+counter <= maxY) return false
-
-                    set(x, y, sandId)
                     return true
                 }
             }
         }
 
         return false
+    }
+
+    private fun handleSand(x: Int, y: Int, addY: boolean = true): ScanStatus {
+        val it = getFancy(x,y)
+
+        return when (it) {
+            ScanStatus.IsEmpty -> when (getFancy(x,y+1)) {
+                ScanStatus.IsEmpty -> getFancy(x, y+1)
+            }
+            ScanStatus.IsRock ->
+        }
     }
 }
 
@@ -170,16 +158,42 @@ class Day14 : Solution() {
             "24" to ""
         )
 
+    val sandCheck = listOf(
+        Pair(500, 8),
+        Pair(499, 8),
+        Pair(501, 8),
+        Pair(500, 7),
+        Pair(498, 8),
+        Pair(499, 7),
+        Pair(501, 7),
+        Pair(500, 6),
+        Pair(497, 8),
+        Pair(498, 7)
+    )
+
     override fun part1(input: List<String>): String {
         val map = Map(input)
 
         var res = 0
 
-        do {
+        while(true) {
+            val result = map.dropSand()
             println("=".repeat(25))
+            if (isTest && false) {
+                val check = sandCheck.getOrNull(res)
+                if (check != null && map.get(check.first, check.second) != 2) {
+                    map.set(check.first, check.second, 3)
+                    map.print()
+                    throw Error("$check is not sand!")
+                }
+            }
             map.print()
             res++
-        } while (map.dropSand())
+
+            if (!result) break
+        }
+
+        res++
 
 
         return res.toString()
