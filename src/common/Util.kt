@@ -44,3 +44,7 @@ public inline fun <T> Iterable<T>.takeUntil(predicate: (T) -> Boolean): List<T> 
     }
     return list
 }
+
+val numbers = listOf("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
+
+inline fun String.numberWordToInt(): Int = numbers.indexOf(this.lowercase()) + 1

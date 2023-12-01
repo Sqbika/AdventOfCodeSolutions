@@ -7,7 +7,7 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.6.0"
+    kotlin("jvm") version "1.6.20"
 
     application
 }
@@ -44,12 +44,6 @@ sourceSets.main {
     java.srcDirs("src/")
     resources {
 
-    }
-}
-
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(16))
     }
 }
 
