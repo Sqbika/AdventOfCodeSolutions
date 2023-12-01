@@ -96,11 +96,22 @@ fun main(args: Array<String>) {
         fetchInput(day, path)
     }
 
+    if (!Files.exists(path.resolve("Day$day.kt"))) {
+        createDay(day, path)
+    }
+
     val clazzString = "years.y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$day.Day$day"
 
     runDay(clazzString, args.contains("test"))
 }
 
+fun createDay(day: Int, path: Path) {
+    val template = Path.of("src/common/template.txt").readText()
+        .replace("DAY_TEMPLATE", day.toString())
+        .replace("PACKAGE_TEMPLATE", "years.y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$day")
+
+    path.resolve("Day$day.kt").writeText(template)
+}
 
 fun fetchInput(day: Int, path: Path) {
     val token = Path.of(".token").readText().trim()
