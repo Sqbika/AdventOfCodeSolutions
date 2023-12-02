@@ -98,6 +98,8 @@ fun main(args: Array<String>) {
 
     if (!Files.exists(path.resolve("Day$day.kt"))) {
         createDay(day, path)
+        println("Created Day $day. Skipping running.")
+        return
     }
 
     val clazzString = "years.y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$day.Day$day"

@@ -32,8 +32,11 @@ public inline fun <T> Iterable<T>.productOf(selector: (T) -> Long): Long {
     return sum
 }
 
+inline fun Iterable<Int>.productOf() = fold(1) { acc: Int, i: Int -> acc*i }
 
 inline fun Number.toDigits(): List<Int> = this.toString().toCharArray().map{it.toString().toInt()}
+
+inline fun List<Int>.max() = this.maxOf { it }
 
 public inline fun <T> Iterable<T>.takeUntil(predicate: (T) -> Boolean): List<T> {
     val list = ArrayList<T>()
@@ -48,3 +51,4 @@ public inline fun <T> Iterable<T>.takeUntil(predicate: (T) -> Boolean): List<T> 
 val numbers = listOf("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 
 inline fun String.numberWordToInt(): Int = numbers.indexOf(this.lowercase()) + 1
+

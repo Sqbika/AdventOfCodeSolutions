@@ -1,5 +1,7 @@
 package PACKAGE_TEMPLATE
 
+import common.Solution
+
 class DayDAY_TEMPLATE : Solution() {
 
     override val tests: List<Pair<String, String>>
