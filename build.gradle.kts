@@ -7,7 +7,7 @@
  */
 
 plugins {
-    kotlin("jvm") version "1.6.20"
+    kotlin("jvm") version "1.9.21"
 
     application
 }
@@ -20,19 +20,19 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 
     // Use the Kotlin JDK 8 standard library.
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10")
 
     // This dependency is used by the application.
-    implementation("com.google.guava:guava:30.1.1-jre")
+    implementation("com.google.guava:guava:31.1-jre")
 
     // Use the Kotlin test library.
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.8.10")
 
     // Use the Kotlin JUnit integration.
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:1.8.10")
 
     testCompileOnly("io.kotlintest:kotlintest-runner-junit5:3.1.9")
-    implementation(kotlin("test"))
+    implementation("org.jetbrains.kotlin:kotlin-test:1.8.10")
 }
 
 application {
