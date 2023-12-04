@@ -1,5 +1,7 @@
 package common
 
+import kotlin.math.pow
+
 fun <T> T.debugPrint() = also { println(this) }
 
 fun <T> List<List<T>>.transpose() = List(this.maxOf {it.size}) { idx ->
@@ -60,3 +62,4 @@ inline fun String.threeByThreeGrid(idx: Int, width: Int) = threeByThreeIdx(idx, 
 
 fun threeByThreeIdx(idx: Int, width: Int) = listOf(idx-width-1, idx-width, idx-width+1, idx-1, idx+1, idx+width-1, idx+width, idx+width+1)
 
+fun Int.pow(exponential: Int) = toDouble().pow(exponential).toInt()

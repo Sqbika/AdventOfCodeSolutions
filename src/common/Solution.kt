@@ -83,7 +83,17 @@ fun main(args: Array<String>) {
     val day = when {
         args.isEmpty() || args.contains("today") -> Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         args.any{it.startsWith("day")} -> args.find{it.startsWith("day")}!!.replace("day", "").toInt()
+        args.contains("ask") -> readln().toInt()
         else -> -1
+    }
+
+    var test = when {
+        args.contains("test") -> true
+        args.contains("ask") -> {
+            print("Test? (y)")
+            readln() == "y"
+        }
+        else -> false
     }
 
     val path = Path.of("src/years/y${Calendar.getInstance().get(Calendar.YEAR)}/kt/day$day")
@@ -104,7 +114,7 @@ fun main(args: Array<String>) {
 
     val clazzString = "years.y${Calendar.getInstance().get(Calendar.YEAR)}.kt.day$day.Day$day"
 
-    runDay(clazzString, args.contains("test"))
+    runDay(clazzString, test)
 }
 
 fun createDay(day: Int, path: Path) {
