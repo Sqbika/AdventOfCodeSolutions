@@ -2,7 +2,7 @@ package common
 
 import kotlin.math.pow
 
-fun <T> T.debugPrint() = also { println(this) }
+fun <T> T.debugPrint(prefix: String = "", suffix: String = "") = also { println("$prefix$this$suffix") }
 
 fun <T> List<List<T>>.transpose() = List(this.maxOf {it.size}) { idx ->
     this.map { it.getOrNull(idx) }
