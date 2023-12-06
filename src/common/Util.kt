@@ -28,13 +28,8 @@ fun <T> MutableList<T>.dropTakeLast(n:Int): MutableList<T> {
     return toReturn.toMutableList()
 }
 
-public inline fun <T> Iterable<T>.productOf(selector: (T) -> Long): Long {
-    var sum: Long = 1.toLong()
-    for (element in this) {
-        sum *= selector(element)
-    }
-    return sum
-}
+inline fun <T> Iterable<T>.productOfLong(selector: (T) -> Long): Long = fold(1) {acc, it -> acc * selector(it) }
+inline fun <T> Iterable<T>.productOf(selector: (T) -> Int): Int = fold(1) {acc, it -> acc * selector(it) }
 
 inline fun Iterable<Int>.productOf() = fold(1) { acc: Int, i: Int -> acc*i }
 
