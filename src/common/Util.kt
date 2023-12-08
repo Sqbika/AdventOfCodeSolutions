@@ -58,3 +58,22 @@ inline fun String.threeByThreeGrid(idx: Int, width: Int) = threeByThreeIdx(idx, 
 fun threeByThreeIdx(idx: Int, width: Int) = listOf(idx-width-1, idx-width, idx-width+1, idx-1, idx+1, idx+width-1, idx+width, idx+width+1)
 
 fun Int.pow(exponential: Int) = toDouble().pow(exponential).toInt()
+
+fun Long.gcm(otherP: Long): Long {
+    var result = this
+    var other = otherP
+
+    while (other > 0) {
+        other = result % other.also {
+            result = other
+        }
+    }
+
+    return result
+}
+
+fun List<Long>.gcm(): Long = reduce {acc, i ->  acc.gcm(i)}
+
+fun Long.lcm(other: Long) = this * (other / this.gcm(other))
+
+fun List<Long>.lcm() = reduce {acc, i -> acc.lcm(i) }
