@@ -77,3 +77,9 @@ fun List<Long>.gcm(): Long = reduce {acc, i ->  acc.gcm(i)}
 fun Long.lcm(other: Long) = this * (other / this.gcm(other))
 
 fun List<Long>.lcm() = reduce {acc, i -> acc.lcm(i) }
+
+fun Pair<Int, Int>.plus(left: Int = 0, right: Int = 0) = Pair(this.first + left, this.second + right)
+fun Pair<Int, Int>.minus(left: Int = 0, right: Int = 0) = Pair(this.first - left, this.second - right)
+
+fun Pair<Int, Int>.minus(other: Pair<Int, Int>) = Pair(this.first - other.first, this.second - other.second)
+
