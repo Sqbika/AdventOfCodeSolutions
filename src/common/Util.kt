@@ -8,6 +8,8 @@ fun <T> List<List<T>>.transpose() = List(this.maxOf {it.size}) { idx ->
     this.map { it.getOrNull(idx) }
 }
 
+fun List<String>.transposeStrings() = List(this[0].length) { idx -> this.map { it[idx] }.joinToString("") }
+
 fun <T> MutableList<T>.swap(idx1: Int, idx2: Int): MutableList<T> {
     this[idx1] = this[idx2].also {
         this[idx2] = this[idx1]
@@ -83,3 +85,25 @@ fun Pair<Int, Int>.minus(left: Int = 0, right: Int = 0) = Pair(this.first - left
 
 fun Pair<Int, Int>.minus(other: Pair<Int, Int>) = Pair(this.first - other.first, this.second - other.second)
 
+fun List<String>.addToAll(other: List<String>): Sequence<String> = this.asSequence().map { other.map { otherStr -> it + otherStr } }.flatten()
+
+fun IntRange.lazyCount() = this.last - this.first + 1
+
+fun <T> List<T>.repeat(amount: Int) = List(amount) {this}.flatten()
+
+fun listMatch(of: List<Int>, comparedTo: List<Int>, allowPartial: Boolean = true): Boolean {
+    if (comparedTo.size < of.size) return false
+
+    if (!allowPartial && of.size != comparedTo.size) return false
+
+    for (idx in of.indices) {
+        if (allowPartial && idx == of.size-1 && of[idx] < comparedTo[idx]) {
+            return true
+        }
+
+        if (of[idx] != comparedTo[idx]) return false
+    }
+
+    return true
+}
+fun String.stringDiff(other: String): Int = this.zip(other).count { (left, right) -> left != right }

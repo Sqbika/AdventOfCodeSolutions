@@ -10,7 +10,8 @@ class Day11 : Solution() {
 
     override val tests: List<Pair<String, String>>
         get() = listOf(
-            "374" to "8410"
+            "374" to "8410",
+            "1" to "1"
         )
 
     fun amountInListBetweenLeftAndRight(left: Int, right: Int, inside: List<Int>): Int = inside.filter { min(left, right) < it && it < max(left, right) }.size
