@@ -10,6 +10,7 @@ import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.readText
 import kotlin.io.path.writeText
+import kotlin.system.measureTimeMillis
 
 abstract class Solution {
 
@@ -145,14 +146,17 @@ fun runDay(clazz: String, doTest: Boolean) {
         println("=".repeat(25))
         println(solution.path)
 
-        val part1 = solution.part1(solution.input)
+        println("=".repeat(25))
 
-        println("\nPart 1: $part1")
+        val p1Time = measureTimeMillis {
+            print("Part 1: ||${solution.part1(solution.input)}||")
+        }
+        println(" | $p1Time ms")
 
-
-        println("\n" + "=".repeat(25))
-
-        println("Part 2: ${solution.part2(solution.input)}")
+        val p2Time = measureTimeMillis {
+            print("Part 2: ||${solution.part2(solution.input)}||")
+        }
+        println(" | $p2Time ms")
 
         println("=".repeat(25))
     }

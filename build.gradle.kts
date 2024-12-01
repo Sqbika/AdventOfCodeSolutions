@@ -60,7 +60,6 @@ tasks.register<Copy>("copyInputsAndTests") {
     into(layout.buildDirectory.dir("classes/kotlin/main/"))
 }
 
-/*
 idea.project.settings.runConfigurations {
     add(create(
         "Run Today",
@@ -86,4 +85,4 @@ idea.project.settings.runConfigurations {
         programParameters = "ask"
         beforeRun.add(GradleTask("copyInputsAndTests"))
     })
-}*/
+}
