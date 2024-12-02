@@ -107,3 +107,5 @@ fun listMatch(of: List<Int>, comparedTo: List<Int>, allowPartial: Boolean = true
     return true
 }
 fun String.stringDiff(other: String): Int = this.zip(other).count { (left, right) -> left != right }
+
+inline fun <T> List<T>.iterateVarientsWithoutOne() = List(this.size) { idx -> this.toMutableList().run { removeAt(idx); toList()} }

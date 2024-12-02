@@ -133,6 +133,9 @@ fun fetchInput(day: Int, path: Path) {
         .build()
 
     val input = httpClient.send(request, HttpResponse.BodyHandlers.ofString()).body()
+    if (input.contains("Puzzle inputs differ by user.  Please log in to get your puzzle input.")) {
+        throw Error("AOC Cookie has expired. Please update token")
+    }
     path.resolve("input.txt").writeText(input)
 }
 
